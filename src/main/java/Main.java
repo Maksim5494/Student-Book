@@ -1,11 +1,19 @@
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        StudentFileReader.read(Path.of("students.txt"))
-                .stream()
+        List<Student> students;
+        try (InputStream inputStream = Main.class.getResourceAsStream("/students.txt")) {
+            if (inputStream == null) {
+                throw new IOException("Файл students.txt не найден в classpath (src/main/resources)");
+            }
+            students = StudentFileReader.read(inputStream);
+        }
+
+        students.stream()
                 .peek(System.out::println)
                 .flatMap(student -> student.getBooks().stream())
                 .distinct()

@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +11,11 @@ public final class StudentFileReader {
     private StudentFileReader() {
     }
 
-    public static List<Student> read(Path path) throws IOException {
+    public static List<Student> read(InputStream inputStream) throws IOException {
         List<Student> students = new ArrayList<>();
 
-        try (BufferedReader reader =
-                     Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
             String line;
             int lineNumber = 0;
